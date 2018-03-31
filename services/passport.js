@@ -25,7 +25,7 @@ passport.use(
       proxy: true
     },
     async (accessToken, refreshToken, profile, done) => {
-      let {id, name, emails, gender, provider} = profile;
+      let {id, name, emails, photos, provider} = profile;
       
       const existingUser = await User.findOne({ providerId: id });
       if (existingUser) {
@@ -34,11 +34,11 @@ passport.use(
 
       let docRec = {
         provider,
-        id,
+        providerId: id,
         firstName: name.givenName,
         lastName: name.familyName,
-        gender,
-        email: emails[0].value
+        email: emails[0].value,
+        photo: photos[0].value
       }
       const user = await new User(docRec).save();
       done(null, user);
