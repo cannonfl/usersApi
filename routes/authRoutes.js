@@ -23,6 +23,10 @@ module.exports = app => {
   });
 
   app.get('/current_user', (req, res) => {
-    res.send(req.user);
+    let statusCode = 200;
+    if (!req.user) {
+      statusCode = 204;
+    }
+    res.status(statusCode).json(req.user);
   });
 };
